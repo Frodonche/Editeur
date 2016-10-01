@@ -1,13 +1,13 @@
-package GUI;
+package editeur.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 
-import Modele.TP;
-import Vues.VueMenu;
-import Vues.VueSelectionTexte;
-import Vues.VueTexte;
+import editeur.Modele.TP;
+import editeur.Vues.VueMenu;
+import editeur.Vues.VueSelectionTexte;
+import editeur.Vues.VueTexte;
 
 @SuppressWarnings("serial")
 public class LancerTP extends JFrame{

@@ -1,9 +1,9 @@
-package Vues;
+package editeur.Vues;
 
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import Modele.TP;
+import editeur.Modele.TP;
 
 @SuppressWarnings("serial")
 public class VueTexte extends JPanel implements Vue{

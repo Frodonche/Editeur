@@ -1,4 +1,4 @@
-package Modele;
+package editeur.Modele;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -7,8 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import Vues.Vue;
-import editeurtexte.ITexte;
+import editeur.Vues.Vue;
+import editeur.editeurtexte.ITexte;
 
 public class TP implements ITexte{
 	protected ArrayList<Vue> lesVues;

@@ -1,4 +1,4 @@
-package Vues;
+package editeur.Vues;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,7 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import Modele.TP;
+import editeur.Modele.TP;
 
 @SuppressWarnings("serial")
 public class VueSelectionTexte extends JPanel implements Vue{

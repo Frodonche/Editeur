@@ -1,4 +1,4 @@
-package Vues;
+package editeur.Vues;
 
 
 import java.awt.Color;
@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
-import Modele.TP;
+import editeur.Modele.TP;
 
 @SuppressWarnings("serial")
 public class VueMenu extends JPanel implements Vue{

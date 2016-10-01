@@ -1,4 +1,4 @@
-package editeurtexte;
+package editeur.editeurtexte;
 
 /**
  * @author gautier - UHP
