@@ -1,5 +1,9 @@
 package Modele;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import Vues.Vue;
@@ -7,8 +11,11 @@ import editeurtexte.ITexte;
 
 public class TP implements ITexte{
 	protected ArrayList<Vue> lesVues;
+	protected ArrayList<String> lesLignes;
+	
 	public TP(){
 		this.lesVues = new ArrayList<Vue>();	
+		this.lesLignes = new ArrayList<String>();
 	}
 	
 	public void majVues(){
@@ -26,11 +33,18 @@ public class TP implements ITexte{
 	}
 	
 	public void enregistrer(){
-		
+		this.enregistrerSous("default.txt");
 	}
 	
-	public void enregistrerSous(){
-		
+	public void enregistrerSous(String name){
+		Path file = Paths.get(name); //on créé un fichier du nom fichier
+	    StringBuilder texteLignes = new StringBuilder(); // on récupère toutes les lignes qu'on place dans un stringbuilder
+			for (String s : lesLignes){
+				texteLignes.append(s+"|");
+			}
+	        try {
+	            Files.write(file, texteLignes.toString().getBytes()); //on écrit tout dans le fichier
+	        } catch (IOException e){}
 	}
 	
 	public void changerCouleurTexte(){
@@ -47,26 +61,24 @@ public class TP implements ITexte{
 	
 	@Override
 	public void addLine(String ligne) {
-		// TODO Auto-generated method stub
-		
+		this.lesLignes.add(ligne);
+		majVues();
 	}
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		this.lesLignes.clear();
+		majVues();
 	}
 
 	@Override
 	public int getSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.lesLignes.size();
 	}
 
 	@Override
 	public String getLine(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.lesLignes.get(index);
 	}
 
 	@Override

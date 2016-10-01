@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import Modele.TP;
 import Vues.VueMenu;
 import Vues.VueSelectionTexte;
+import Vues.VueTexte;
 
 @SuppressWarnings("serial")
 public class LancerTP extends JFrame{
@@ -23,6 +24,9 @@ public class LancerTP extends JFrame{
 		
 		VueSelectionTexte vueS = new VueSelectionTexte(appli);
 		this.add(vueS, BorderLayout.SOUTH);
+		
+		VueTexte vueT = new VueTexte(appli);
+		this.add(vueT, BorderLayout.NORTH);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack() ;

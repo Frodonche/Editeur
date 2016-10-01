@@ -1,27 +1,22 @@
 package Vues;
 
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
-import Ecouteurs.EcouteurCouleurFond;
-import Ecouteurs.EcouteurCouleurMenu;
-import Ecouteurs.EcouteurCouleurTexte;
-import Ecouteurs.EcouteurEnregistrer;
-import Ecouteurs.EcouteurEnregistrerSous;
-import Ecouteurs.EcouteurNouveau;
-import Ecouteurs.EcouteurOuvrir;
-import Ecouteurs.EcouteurQuitter;
 import Modele.TP;
 
 @SuppressWarnings("serial")
 public class VueMenu extends JPanel implements Vue{
+	protected static final Component JPanel = null;
 	protected TP appli;
 	public JMenuBar menuBar;
 	protected JMenu fichier;
@@ -68,10 +63,33 @@ public class VueMenu extends JPanel implements Vue{
 			}
 		});
 		
-		this.ouvrir.addActionListener(new EcouteurOuvrir(appli));
-		this.enregistrer.addActionListener(new EcouteurEnregistrer(appli));
-		this.enregistrerSous.addActionListener(new EcouteurEnregistrerSous(appli));
-		this.quitter.addActionListener(new EcouteurQuitter());
+		this.ouvrir.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				////
+			}
+		});
+		
+		this.enregistrer.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				appli.enregistrer();
+				JOptionPane.showConfirmDialog(VueMenu.JPanel, "Enregistré !", "Confirmation", JOptionPane.DEFAULT_OPTION);
+			}
+		});
+		
+		this.enregistrerSous.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				JOptionPane demande = new JOptionPane();
+				String nom = demande.showInputDialog("Entrez un nom");
+				appli.enregistrerSous(nom+".txt");
+				demande.showConfirmDialog(VueMenu.JPanel, "Enregistré !", "Confirmation", JOptionPane.DEFAULT_OPTION);
+			}
+		});
+		
+		this.quitter.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
 		
 		this.couleurTexte = new JMenuItem("Couleur Texte");
 		this.couleurMenu = new JMenuItem("Couleur Menu");
@@ -81,10 +99,23 @@ public class VueMenu extends JPanel implements Vue{
 		this.style.add(this.couleurMenu);
 		this.style.add(this.couleurFond);
 		
-		this.couleurTexte.addActionListener(new EcouteurCouleurTexte(appli));
-		this.couleurMenu.addActionListener(new EcouteurCouleurMenu(appli));
-		this.couleurFond.addActionListener(new EcouteurCouleurFond(appli));
+		this.couleurTexte.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				appli.clear();
+			}
+		});
 		
+		this.couleurMenu.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				appli.clear();
+			}
+		});
+		
+		this.couleurFond.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				appli.clear();
+			}
+		});
 		
 		this.appli.ajouterVue(this);
 		mettreAJour();
