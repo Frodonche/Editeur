@@ -1,12 +1,7 @@
 package Vues;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import Modele.TP;
 
@@ -21,6 +16,7 @@ public class VueTexte extends JPanel implements Vue{
 			
 		// Affichage texte
 		this.texte = new JTextArea();
+		this.texte.setEditable(false);
 		this.add(this.texte);
 		
 		
@@ -35,6 +31,7 @@ public class VueTexte extends JPanel implements Vue{
 		for (int i = 0; i < this.appli.getSize(); i++){
 			this.texte.append(this.appli.getLine(i)+"\n");
 		}
+		this.texte.setForeground(this.appli.getCurrentColor());
 	}
 
 }

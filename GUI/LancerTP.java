@@ -14,7 +14,7 @@ public class LancerTP extends JFrame{
 
 	public LancerTP(){
 		
-		super("CPOA-TP");
+		super("Editeur");
 		setPreferredSize(new Dimension(1000, 600));
 		
 		TP appli = new TP();

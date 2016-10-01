@@ -1,10 +1,16 @@
 package Vues;
 
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
+import javax.swing.JColorChooser;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -29,9 +35,11 @@ public class VueMenu extends JPanel implements Vue{
 	protected JMenuItem enregistrerSous;
 	protected JMenuItem quitter;
 	
-	protected JMenuItem couleurTexte;
-	protected JMenuItem couleurMenu;
-	protected JMenuItem couleurFond;
+	protected JMenuItem rouge;
+	protected JMenuItem noir;
+	protected JMenu couleurCustom;
+	protected JMenuItem newColor;
+
 	
 	public VueMenu(TP appli){
 		super();
@@ -40,6 +48,8 @@ public class VueMenu extends JPanel implements Vue{
 		this.menuBar = new JMenuBar();
 		this.fichier = new JMenu("Fichier");
 		this.style = new JMenu("Style");
+		
+		///////////////// MENU FICHIER ////////////////
 		
 		this.menuBar.add(fichier);
 		this.menuBar.add(style);
@@ -65,7 +75,25 @@ public class VueMenu extends JPanel implements Vue{
 		
 		this.ouvrir.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				////
+				appli.clearLines();
+				JFileChooser choice = new JFileChooser();
+				choice.setDialogTitle("Choisir un fichier"); // on ouvre la fenetre et on choisit le fichier
+				int retour = choice.showOpenDialog(null);
+				
+				if (retour == JFileChooser.APPROVE_OPTION) {
+					File file = choice.getSelectedFile(); // on le recupere dans une variable
+				    try {
+				    	Scanner lecteur = new Scanner(file);
+						lecteur.useDelimiter("\n"); // on set le separateur
+						while(lecteur.hasNext()){
+							appli.addLine(lecteur.next());
+						}
+						
+						lecteur.close();
+					} catch (FileNotFoundException e1) {
+						e1.printStackTrace();
+					}
+				}
 			}
 		});
 		
@@ -78,10 +106,9 @@ public class VueMenu extends JPanel implements Vue{
 		
 		this.enregistrerSous.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane demande = new JOptionPane();
-				String nom = demande.showInputDialog("Entrez un nom");
+				String nom = JOptionPane.showInputDialog("Entrez un nom");
 				appli.enregistrerSous(nom+".txt");
-				demande.showConfirmDialog(VueMenu.JPanel, "Enregistré !", "Confirmation", JOptionPane.DEFAULT_OPTION);
+				JOptionPane.showConfirmDialog(VueMenu.JPanel, "Enregistré !", "Confirmation", JOptionPane.DEFAULT_OPTION);
 			}
 		});
 		
@@ -91,31 +118,43 @@ public class VueMenu extends JPanel implements Vue{
 			}
 		});
 		
-		this.couleurTexte = new JMenuItem("Couleur Texte");
-		this.couleurMenu = new JMenuItem("Couleur Menu");
-		this.couleurFond = new JMenuItem("Couleur Fond");
+		///////////////////////   COULEUR TEXTE ///////////////////
 		
-		this.style.add(this.couleurTexte);
-		this.style.add(this.couleurMenu);
-		this.style.add(this.couleurFond);
+		this.rouge = new JMenuItem("Rouge");
+		this.style.add(this.rouge);
 		
-		this.couleurTexte.addActionListener(new ActionListener(){
+		this.noir = new JMenuItem("Noir");
+		this.style.add(this.noir);
+		
+		this.couleurCustom = new JMenu("Mes couleurs");
+		this.style.add(couleurCustom);
+		this.newColor = new JMenuItem("Nouvelle couleur");
+		this.couleurCustom.add(this.newColor);
+		
+		this.rouge.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				appli.clear();
+				appli.setColor(Color.RED);
 			}
 		});
 		
-		this.couleurMenu.addActionListener(new ActionListener(){
+		this.noir.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				appli.clear();
+				appli.setColor(Color.BLACK);
 			}
 		});
 		
-		this.couleurFond.addActionListener(new ActionListener(){
+		
+		this.newColor.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				appli.clear();
+				Color maCouleur = JColorChooser.showDialog(null, "Couleur du texte", Color.BLACK);
+				String nom = JOptionPane.showInputDialog("Nommez votre couleur");
+				if(maCouleur != null){
+					appli.addColor(maCouleur, nom);
+					appli.setColor(maCouleur);
+				}
 			}
 		});
+		
 		
 		this.appli.ajouterVue(this);
 		mettreAJour();
@@ -127,6 +166,7 @@ public class VueMenu extends JPanel implements Vue{
 	
 	@Override
 	public void mettreAJour() {
+		
 	}
 
 }
