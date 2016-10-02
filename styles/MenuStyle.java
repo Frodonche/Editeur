@@ -3,11 +3,17 @@ package editeur.styles;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
-import javax.swing.JColorChooser;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 
 import editeur.modele.TP;
 
@@ -56,16 +62,73 @@ public class MenuStyle extends JMenu{
 		JMenuItem newColor = new JMenuItem("Nouvelle couleur");
 		this.add(newColor);
 		
+//		newColor.addActionListener(new ActionListener(){
+//			public void actionPerformed(ActionEvent arg0) {
+//				Color maCouleur = JColorChooser.showDialog(null, "Couleur du texte", Color.BLACK);
+//				String nom = JOptionPane.showInputDialog("Nommez votre couleur");
+//				if(maCouleur != null){
+//					appli.addColor(maCouleur, nom);
+//					appli.setColor(maCouleur);
+//				}
+//			}
+//
+//		});
+		
 		newColor.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Color maCouleur = JColorChooser.showDialog(null, "Couleur du texte", Color.BLACK);
-				String nom = JOptionPane.showInputDialog("Nommez votre couleur");
-				if(maCouleur != null){
-					appli.addColor(maCouleur, nom);
-					appli.setColor(maCouleur);
+				JFileChooser choice = new JFileChooser();
+				choice.setDialogTitle("Choisir un fichier"); // on ouvre la fenetre et on choisit le fichier
+				int retour = choice.showOpenDialog(null);
+				
+				if (retour == JFileChooser.APPROVE_OPTION) {
+					@SuppressWarnings("unused")
+					File file = choice.getSelectedFile(); // on le recupere dans une variable
+					String jarPath = choice.getSelectedFile().getPath();		
+				
+					JarFile jarFile;
+					try {
+						jarFile = new JarFile(jarPath);
+					
+					Enumeration<JarEntry> e = jarFile.entries();
+	
+					URL[] urls = { new URL("jar:file:" + jarPath+"!/") };
+					URLClassLoader cL = URLClassLoader.newInstance(urls);
+	
+					while (e.hasMoreElements()) {
+						JarEntry je = e.nextElement();
+						if(je.isDirectory() || !je.getName().endsWith(".class")){
+							continue;
+						}
+						// -6 because of .class
+						String className = je.getName().substring(0,je.getName().length()-6);
+						className = className.replace('/', '.');
+						@SuppressWarnings("rawtypes")
+						Class c;
+						try {
+								c = cL.loadClass(className);
+							//System.out.println(c.getName());
+			
+							if(Style.class.isAssignableFrom(c)){
+								Color tempCoul = (Color)((Style) c.newInstance()).getColor();
+								String tempName = (String)((Style) c.newInstance()).getName();
+								
+								appli.addColor(tempCoul, tempName);
+								appli.setColor(tempCoul);
+							}
+		
+						} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						}
+					} catch (IOException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+					
+					
 				}
 			}
-
 		});
 		
 	}
